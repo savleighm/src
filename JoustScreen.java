@@ -15,6 +15,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.Timer;
 
+//test2
 
 public class JoustScreen extends KeyAdapter implements ActionListener {
 
@@ -145,7 +146,7 @@ public class JoustScreen extends KeyAdapter implements ActionListener {
 		//   - using velocity
 		//   - change velocity (before or after moving? how does it change?)
 		// check for collisions (does this need to be before moving?)
-		//   - resolve them (somehow…)
+		//   - resolve them (somehowï¿½)
 
 		
 		// DO NOT CHANGE the next line; it must be last in this method
