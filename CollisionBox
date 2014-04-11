@@ -1,0 +1,83 @@
+import java.awt.Rectangle;
+
+public class CollisionBox {
+	/*
+	 * A class for handling collisions between moving objects.
+	 * 
+	 * One of the hardest parts of this assignment is figuring out how to handle
+	 * collisions. We suggest you put this in a CollisionBox class. You can get
+	 * full credit without without submitting this class if you implement
+	 * collision handling it in the Bird or JoustScreen classes instead.
+	 * 
+	 * Things to think about in designing this class:
+	 * 
+	 * Boxes need position, width, and height
+	 * 
+	 * There is a built-in class called Rectangle that might help. It has the
+	 * methods intersects that can check if two rectangles intersect; it also
+	 * has a method intersection that returns the overlap of two rectangles:
+	 * 
+	 * 
+	 * In the above image, A.intersects(B) is true and A.intersection(B) is the
+	 * green rectangle.
+	 * 
+	 * For collisions: given two boxes, how can you find the shortest distance
+	 * you have to move one of them to make them not overlap?
+	 * 
+	 * For bird-bird collisions: given two overlapping boxes, how can you figure
+	 * out which one is higher than the other?
+	 */
+	// birdies
+	private Bird redBird;
+	private Bird greenBird;
+	
+	//Rectangles surrounding birds
+	private Rectangle redBirdHead;
+	private Rectangle greenBirdHead;
+	private Rectangle redBirdBody;
+	private Rectangle greenBirdBody;
+
+	
+	//position/velocity of birds
+	private double xVelocity;
+	private double yVelocity;
+	private double xPosition;
+	private double yPosition;
+	
+	//create rectangles around the birds
+	public CollisionBox(){
+	greenBird = new Bird("birdg");
+	redBird = new Bird("birdr");
+	}
+	/**	/// may not need with bounds()
+	redBirdHead = new Rectangle(0,0,0,0);		/////// do stuff  ////////////////// 
+	greenBirdHead = new Rectangle(0,0,0,0);
+	redBirdBody = new Rectangle(0,0,0,0);
+	greenBirdBody = new Rectangle(0,0,0,0);
+	
+	}
+	**/
+	
+	// if birds touch
+	public boolean touches(Bird other) {
+		// TODO: use bounds() and the Rectangle .intersects method to tell if two asteroids are touching
+		Rectangle firstRectangle = this.bounds();
+		Rectangle otherRectangle = other.bounds();
+		if (firstRectangle.intersects(otherRectangle)) {
+			return true;			
+		}
+		return false;
+	
+	}
+	
+	// somehow make the boundaries of the birds
+		// get image widths and heights
+	public Rectangle bounds() { 
+		double x = this.xPosition; 
+		double y = this.yPosition;
+		
+		return new Rectangle((int)x-10, (int)y-10, 20, 20); // subtract width and height of pics of birds
+	}
+
+
+}
