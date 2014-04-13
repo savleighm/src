@@ -10,6 +10,8 @@ import javax.imageio.ImageIO;
 
 public class Bird {
 
+	private static final double E = 2.71828;
+
 	// / imgs: default storage for the pictures of the bird
 	private BufferedImage[] imgs;
 
@@ -17,8 +19,10 @@ public class Bird {
 	private int iValue;
 	private double xPosition = 100.3;
 	private double yPosition = 204.1;
-	private double yVelocity = 4;
-	private double xVelocity = 4;
+	private double yVelocity = 0;
+	private double xVelocity = 0;
+	// private double xAccel = 0;
+	private double yAccel = 0.12;
 
 	/**
 	 * Creates a bird object with the given image set
@@ -81,15 +85,44 @@ public class Bird {
 				(int) y - this.imgs[i].getHeight() / 2, null);
 	}
 
-	public void tick() {
+	public void tick(Rectangle obstacle) {
+
+		this.yVelocity = this.yVelocity + this.yAccel;
 		this.xPosition = this.xVelocity + this.xPosition;
 		this.yPosition = this.yVelocity + this.yPosition;
+		System.out.println(this.yVelocity + "the y velocity");
+		// TODO: fix birds falling out of screen; separate
+
+		// creates the bottom line
+		if (this.yPosition > 580) {
+			this.yPosition = 578;
+			this.yVelocity = -(this.yVelocity) / 1.25;
+		}
+		// creates the top boundary
+		if (this.yPosition < 20) {
+			this.yPosition = 22;
+			this.yVelocity = -(this.yVelocity - this.yAccel) / 1.25;
+		}
+
+		// creates right boundaries
+		if (this.xPosition >= 780) {
+			this.xPosition = 778;
+			this.xVelocity = -(this.xVelocity) / 1.25;
+		}
+		// creates left boundary
+		if (this.xPosition <= 20 && !(this.xVelocity == 4)) {
+			this.xPosition = 22;
+			this.xVelocity = -(this.xVelocity) / 1.25;
+		}
+		if (this.touches(obstacle)) {
+			this.xPosition = this.xPosition + -this.xVelocity;
+		}
 
 	}
 
-	public boolean touches(BirdPublic other) {
+	public boolean touches(Rectangle obstacle) {
 		Rectangle firstRectangle = this.bounds();
-		Rectangle otherRectangle = other.bounds();
+		Rectangle otherRectangle = obstacle.getBounds();
 		if (firstRectangle.intersects(otherRectangle)) {
 			return true;
 		}
@@ -145,6 +178,14 @@ public class Bird {
 
 	public void setxVelocity(double xVelocity) {
 		this.xVelocity = xVelocity;
+	}
+
+	public double getyAccel() {
+		return yAccel;
+	}
+
+	public void setyAccel(double yAccel) {
+		this.yAccel = yAccel;
 	}
 
 }
