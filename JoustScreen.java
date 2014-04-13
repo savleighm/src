@@ -54,7 +54,7 @@ public class JoustScreen extends KeyAdapter implements ActionListener {
 		// objects, some walls)
 		greenBird = new Bird("birdg");
 		redBird = new Bird("birdr");
-		obstacleOne = new Rectangle(2, 50, 78, 11);
+		obstacleOne = new Rectangle(5, 5, 5, 500);
 		obstacleTwo = new Rectangle(50, 100, 300, 10);
 
 		// DO NOT CHANGE the next two lines nor add lines after them
@@ -73,24 +73,24 @@ public class JoustScreen extends KeyAdapter implements ActionListener {
 		// TODO: handle the keys you want to use to run your game
 
 		if (event.getKeyCode() == KeyEvent.VK_A) { // example
-			redBird.setxVelocity(4);
-			redBird.setyVelocity(-4);
+			redBird.setxVelocity(-2);
+			redBird.setyVelocity(-2);
 			System.out.println("The 'a' key was pressed");
 		}
 		if (event.getKeyCode() == KeyEvent.VK_S) { // example
-			redBird.setxVelocity(4);
-			redBird.setyVelocity(4);
+			redBird.setxVelocity(2);
+			redBird.setyVelocity(-2);
 			System.out.println("The 's' was pressed");
 		}
 		if (event.getKeyCode() == KeyEvent.VK_L) { // example
-			greenBird.setxVelocity(4);
-			greenBird.setyVelocity(-4);
-			
+			greenBird.setxVelocity(2);
+			greenBird.setyVelocity(-2);
+
 			System.out.println("The 'l' key was pressed");
 		}
 		if (event.getKeyCode() == KeyEvent.VK_K) { // example
-			redBird.setxVelocity(4);
-			redBird.setyVelocity(4);
+			greenBird.setxVelocity(-2);
+			greenBird.setyVelocity(-2);
 			System.out.println("The 'k' was pressed");
 		}
 	}
@@ -110,9 +110,9 @@ public class JoustScreen extends KeyAdapter implements ActionListener {
 
 		// TODO: add every-frame logic in here (gravity, momentum, collisions,
 		// etc)
-		redBird.tick();
-		greenBird.tick();
 		
+		greenBird.tick(obstacleOne);
+		redBird.tick(obstacleOne);
 
 		// DO NOT CHANGE the next line; it must be last in this method
 		this.refreshScreen(); // redraws the screen after things move
