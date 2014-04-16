@@ -1,11 +1,13 @@
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -37,6 +39,16 @@ public class JoustScreen extends KeyAdapter implements ActionListener {
 	private Bird greenBird;
 	private Rectangle obstacleOne;
 	private Rectangle obstacleTwo;
+	private Rectangle greenBirdHead;
+	private Rectangle greenBirdBody;
+	private Rectangle redBirdHead;
+	private Rectangle redBirdBody;
+	private int redXCenter;
+	private int redYCenter;
+	private int greenXCenter;
+	private int greenYCenter;
+	private Rectangle intersection;
+	
 
 	public JoustScreen() {
 		// DO NOT CHANGE the window, content, and paintbrush lines below
@@ -54,8 +66,11 @@ public class JoustScreen extends KeyAdapter implements ActionListener {
 		// objects, some walls)
 		greenBird = new Bird("birdg");
 		redBird = new Bird("birdr");
-		obstacleOne = new Rectangle(5, 5, 5, 500);
+		obstacleOne = new Rectangle(100, 10, 100, 10);
 		obstacleTwo = new Rectangle(50, 100, 300, 10);
+		
+
+		
 
 		// DO NOT CHANGE the next two lines nor add lines after them
 		this.gameTimer = new Timer(20, this); // tick at 1000/20 fps
@@ -71,26 +86,26 @@ public class JoustScreen extends KeyAdapter implements ActionListener {
 	public void keyPressed(KeyEvent event) {
 
 		// TODO: handle the keys you want to use to run your game
-
+				
 		if (event.getKeyCode() == KeyEvent.VK_A) { // example
-			redBird.setxVelocity(-2);
-			redBird.setyVelocity(-2);
+			redBird.setxVelocity(-4);
+			redBird.setyVelocity(-4);
 			System.out.println("The 'a' key was pressed");
 		}
 		if (event.getKeyCode() == KeyEvent.VK_S) { // example
-			redBird.setxVelocity(2);
-			redBird.setyVelocity(-2);
+			redBird.setxVelocity(4);
+			redBird.setyVelocity(-4);
 			System.out.println("The 's' was pressed");
 		}
 		if (event.getKeyCode() == KeyEvent.VK_L) { // example
-			greenBird.setxVelocity(2);
-			greenBird.setyVelocity(-2);
+			greenBird.setxVelocity(4);
+			greenBird.setyVelocity(-4);
 
 			System.out.println("The 'l' key was pressed");
 		}
 		if (event.getKeyCode() == KeyEvent.VK_K) { // example
-			greenBird.setxVelocity(-2);
-			greenBird.setyVelocity(-2);
+			greenBird.setxVelocity(-4);
+			greenBird.setyVelocity(-4);
 			System.out.println("The 'k' was pressed");
 		}
 	}
@@ -111,13 +126,23 @@ public class JoustScreen extends KeyAdapter implements ActionListener {
 		// TODO: add every-frame logic in here (gravity, momentum, collisions,
 		// etc)
 		
-		greenBird.tick(obstacleOne);
-		redBird.tick(obstacleOne);
-
+		greenBird.tick(obstacleOne, redBird);
+		redBird.tick(obstacleOne, greenBird);
+		greenBirdHead = greenBird.getBirdHead();
+		greenBirdBody = greenBird.getBirdBody();
+		redBirdHead = redBird.getBirdHead();
+		redBirdBody = redBird.getBirdBody();
+		redXCenter = (int)redBird.getxPosition();
+		redYCenter = (int)redBird.getyPosition();
+		greenXCenter = (int)greenBird.getxPosition();
+		greenYCenter = (int)greenBird.getyPosition();
+		
+	
 		// DO NOT CHANGE the next line; it must be last in this method
 		this.refreshScreen(); // redraws the screen after things move
 		// DO NOT CHANGE the above line; it must be last in this method
 	}
+	
 
 	/**
 	 * Re-draws the screen. You should erase the old image and draw a new one,
@@ -137,7 +162,23 @@ public class JoustScreen extends KeyAdapter implements ActionListener {
 		this.paintbrush.setColor(Color.GRAY);
 		this.paintbrush.fill(obstacleOne);
 		this.paintbrush.fill(obstacleTwo);
+		this.paintbrush.fill(greenBirdHead);
+		this.paintbrush.fill(redBirdHead);
+		this.paintbrush.setColor(Color.CYAN);
 
+		this.paintbrush.fill(redBirdBody);
+		this.paintbrush.fill(greenBirdBody);
+		
+		this.paintbrush.setColor(Color.BLACK);
+		this.paintbrush.fill(new Rectangle (redXCenter, redYCenter, 1, 1));
+		this.paintbrush.fill(new Rectangle (greenXCenter, greenYCenter, 1, 1));
+		
+		this.paintbrush.setColor(Color.GREEN);
+		
+		this.paintbrush.fill(new Rectangle (greenBird.touches(redBird)));
+		
+		
+		
 		// TODO: fix score and display win message
 
 		// example text drawing, for scores and/or other messages
