@@ -22,7 +22,11 @@ public class Bird {
 	private double yVelocity = 0;
 	private double xVelocity = 0;
 	// private double xAccel = 0;
-	private double yAccel = 0.12;
+	private double yAccel = 0.2;
+
+	private double xAccel = 0.12;
+	private Rectangle birdHead;
+	private Rectangle birdBody;
 
 	/**
 	 * Creates a bird object with the given image set
@@ -85,13 +89,12 @@ public class Bird {
 				(int) y - this.imgs[i].getHeight() / 2, null);
 	}
 
-	public void tick(Rectangle obstacle) {
-
+	public void tick(Rectangle obstacle, Bird other) {
+		this.bounds();
 		this.yVelocity = this.yVelocity + this.yAccel;
+
 		this.xPosition = this.xVelocity + this.xPosition;
 		this.yPosition = this.yVelocity + this.yPosition;
-		System.out.println(this.yVelocity + "the y velocity");
-		// TODO: fix birds falling out of screen; separate
 
 		// creates the bottom line
 		if (this.yPosition > 580) {
@@ -114,27 +117,41 @@ public class Bird {
 			this.xPosition = 22;
 			this.xVelocity = -(this.xVelocity) / 1.25;
 		}
-		if (this.touches(obstacle)) {
-			this.xPosition = this.xPosition + -this.xVelocity;
-		}
 
+		this.xVelocity = this.xVelocity - (this.xVelocity / (10));
+		this.xVelocity = this.xVelocity - (this.xVelocity / (10));
+		// touchesOtherBird(this, other);
 	}
 
-	public boolean touches(Rectangle obstacle) {
-		Rectangle firstRectangle = this.bounds();
-		Rectangle otherRectangle = obstacle.getBounds();
-		if (firstRectangle.intersects(otherRectangle)) {
-			return true;
-		}
-		return false;
+	public void bounds() {
+		double x = this.getxPosition();
+		double y = this.getyPosition();
+		this.birdBody = new Rectangle((int) x - 30, (int) y - 15, 60, 50);
+		this.birdHead = new Rectangle((int) x - 30, (int) y - 30, 60, 15);
+
 	}
-
-	public Rectangle bounds() {
-		// TODO: update size of rectangle for size of bird picture
-		double x = this.xPosition;
-		double y = this.yPosition;
-
-		return new Rectangle((int) x - 10, (int) y - 10, 20, 20);
+	
+	public Rectangle touches (Bird other) {
+		if(this.birdBody.intersects(other.birdBody)) {
+			Rectangle intersection = new Rectangle (birdBody.intersection(other.birdBody));
+			return intersection;
+			
+		}
+		if(this.birdHead.intersects(other.birdBody)) {
+			Rectangle intersection = new Rectangle (birdHead.intersection(other.birdBody));
+			return intersection;
+			
+		}	
+		if(this.birdBody.intersects(other.birdHead)) {
+			Rectangle intersection = new Rectangle (birdBody.intersection(other.birdHead));
+			return intersection;
+			
+		}if(this.birdHead.intersects(other.birdHead)) {
+			Rectangle intersection = new Rectangle (birdHead.intersection(other.birdHead));
+			return intersection;
+			
+		}
+		return new Rectangle (0,0,0,0);
 	}
 
 	// getters and setters for i value, x and y velocities, and x and y
@@ -186,6 +203,22 @@ public class Bird {
 
 	public void setyAccel(double yAccel) {
 		this.yAccel = yAccel;
+	}
+
+	public Rectangle getBirdHead() {
+		return birdHead;
+	}
+
+	public void setBirdHead(Rectangle birdHead) {
+		this.birdHead = birdHead;
+	}
+
+	public Rectangle getBirdBody() {
+		return birdBody;
+	}
+
+	public void setBirdBody(Rectangle birdBody) {
+		this.birdBody = birdBody;
 	}
 
 }
